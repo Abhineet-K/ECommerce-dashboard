@@ -1,0 +1,22 @@
+.e-maps rect[id='maps_control_1_MapAreaBorder'] {
+  fill: transparent !important;
+}
+
+body[data-mui-color-scheme="light"] .e-maps circle[id*="MarkerIndex"]  {
+  fill: #1c1c1c !important;
+}
+body[data-mui-color-scheme="dark"] .e-maps circle[id*="MarkerIndex"]  {
+  fill: #C6C7F8 !important;
+}
+body[data-mui-color-scheme="dark"] .theme-contrast--icon path[id="icon--border"]  {
+  fill: #fff;
+}
+body[data-mui-color-scheme="light"] .theme-contrast--icon path[id="icon--border"]  {
+  fill: #1c1c1c;
+}
+body[data-mui-color-scheme="dark"] .theme-contrast--icon path[id="icon-theme--background"]  {
+  fill: rgba(255, 255, 255, 0.1);
+}
+body[data-mui-color-scheme="light"] .theme-contrast--icon path[id="icon-theme--background"]  {
+  fill: rgba(28, 28, 28, 0.1);
+}
