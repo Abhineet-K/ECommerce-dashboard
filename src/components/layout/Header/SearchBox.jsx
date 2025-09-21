@@ -12,7 +12,10 @@ import {
   Popper,
   ClickAwayListener,
   Fade,
-  useTheme
+  useTheme,
+  useMediaQuery,
+  IconButton,
+  Popover
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -25,6 +28,7 @@ import { searchData } from '../../../utils/data';
 
 const SearchBox = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -119,52 +123,126 @@ const SearchBox = () => {
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <Box sx={{ position: 'relative'}}>
-        <TextField
-          ref={anchorRef}
-          size="small"
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          sx={{
-            maxWidth: 300,
-            '& .MuiOutlinedInput-root': {
-              backgroundColor: theme.palette.background.secondary ,
-              borderRadius: '8px',
+      <Box sx={{ position: 'relative' }}>
+        {!isMobile && (
 
-              // hide border by default
-              '& fieldset': {
-                border: 'none',
+          <TextField
+            ref={anchorRef}
+            size="small"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            sx={{
+              maxWidth: 300,
+              '& .MuiOutlinedInput-root': {
+                backgroundColor: theme.palette.background.secondary,
+                borderRadius: '8px',
+
+                // hide border by default
+                '& fieldset': {
+                  border: 'none',
+                },
+
+                // show thin outline on focus
+                '&.Mui-focused fieldset': {
+                  border: '1px solid',
+                  borderColor: (theme) => theme.palette.primary.main,
+                },
               },
-
-              // show thin outline on focus
-              '&.Mui-focused fieldset': {
-                border: '1px solid',
-                borderColor: (theme) => theme.palette.primary.main,
+              '& input': {
+                color: (theme) => theme.palette.text.primary,
               },
-            },
-            '& input': {
-              color: (theme) => theme.palette.text.primary,
-            },
-            '& .MuiInputAdornment-root': {
-              color: (theme) => theme.palette.text.secondary,
-            },
-          }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
+              '& .MuiInputAdornment-root': {
+                color: (theme) => theme.palette.text.secondary,
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
 
+        )}
+        {isMobile && (
+          <IconButton ref={anchorRef} onClick={() => setOpen((prev) => !prev)}>
+            <SearchIcon />
+          </IconButton>
+        )}
 
+        {/* Popover for mobile */}
+        {isMobile && (
+          <Popover
+            open={open}
+            anchorEl={anchorRef.current}
+            onClose={handleClickAway}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+            PaperProps={{
+              sx: {
+                p: 1,
+                mt: 1,
+                width: '90%',
+                maxWidth: 350,
+              },
+            }}
+            TransitionComponent={Fade}
+          >
+            <TextField
+              size="small"
+              placeholder="Search..."
+              fullWidth
+              value={searchTerm}
+              onChange={handleSearchChange}
+              autoFocus
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  backgroundColor: theme.palette.background.secondary,
+                  borderRadius: '8px',
+                  '& fieldset': { border: 'none' },
+                  '&.Mui-focused fieldset': {
+                    border: '1px solid',
+                    borderColor: theme.palette.primary.main,
+                  },
+                },
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Popover>
+        )}
         <Popper
           open={open && searchResults.length > 0}
           anchorEl={anchorRef.current}
           placement="bottom-start"
           transition
+          modifiers={
+            isMobile
+              ? [
+                {
+                  name: 'offset',
+                  options: {
+                    offset: ({ popper }) => {
+                      return [0, popper.height * 0.15]; 
+                    },
+                  },
+                },
+              ]
+              : []
+          }
           sx={{ zIndex: 1300, width: 400 }}
         >
           {({ TransitionProps }) => (
