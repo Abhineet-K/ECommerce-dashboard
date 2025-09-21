@@ -1,7 +1,5 @@
-// File: src/components/layout/Sidebar/FavoritesRecent.jsx
 import React from 'react';
-import { Box, Tabs, Tab, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import { Star, History, Dashboard, ShoppingCart, AccountCircle } from '@mui/icons-material';
+import { Box, Tabs, Tab, List, ListItem, ListItemText, useTheme } from '@mui/material';
 import { useNavigationContext } from '../../../contexts/NavigationContext';
 import { useAppContext } from '../../../contexts/AppContext';
 import { useNavigate } from 'react-router-dom';
@@ -10,16 +8,16 @@ const FavoritesRecent = () => {
   const { activeTab, setActiveTab } = useNavigationContext();
   const { favorites } = useAppContext();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const favoritePages = [
-    { path: '/dashboard', title: 'Overview', icon: <Dashboard /> },
-    { path: '/dashboard/e-commerce/orders', title: 'Orders', icon: <ShoppingCart /> },
-    { path: '/user-profile/overview', title: 'Profile', icon: <AccountCircle /> }
+    { path: '/dashboard/default', title: 'Default' },
+    { path: '/dashboard/e-commerce/orders', title: 'Orders' },
+    { path: '/dashboard/e-commerce/customers', title: 'Customers' }
   ].filter(page => favorites.includes(page.path));
 
   const recentPages = [
-    { path: '/dashboard', title: 'Overview', icon: <Dashboard /> },
-    { path: '/user-profile/overview', title: 'Profile', icon: <AccountCircle /> }
+    { path: '/dashboard/e-commerce/customers', title: 'Customers' }
   ];
 
   const handleTabChange = (event, newValue) => {
@@ -41,9 +39,9 @@ const FavoritesRecent = () => {
             minHeight: 'auto',
             py: 1,
             fontSize: '0.875rem',
-            color: '#cccccc',
+            color: theme.palette.mode === 'dark' ? '#999999' : '#cccccc',
             '&.Mui-selected': {
-              color: '#999999',
+              color: theme.palette.mode === 'dark' ? '#cccccc' : '#999999',
             },
           },
           '& .MuiTabs-indicator': {
@@ -117,9 +115,16 @@ const FavoritesRecent = () => {
                 onClick={() => handleNavigation(page.path)}
                 sx={{ py: 0.5, px: 1, borderRadius: 1 }}
               >
-                <ListItemIcon sx={{ minWidth: 32 }}>
-                  {page.icon}
-                </ListItemIcon>
+                <Box
+                  sx={{
+                    width: 8,
+                    height: 8,
+
+                    margin: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: '#8b8b8ba8',
+                  }}
+                />
                 <ListItemText
                   primary={page.title}
                   primaryTypographyProps={{ fontSize: '0.875rem' }}

@@ -1,4 +1,3 @@
-// File: src/components/layout/Header/SearchBox.jsx
 import React, { useState, useRef } from 'react';
 import {
   Box,
@@ -18,13 +17,11 @@ import {
 import {
   Search as SearchIcon,
   Dashboard,
-  ShoppingCart,
-  AccountCircle,
   Inventory,
   People as PeopleIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { searchData } from '../../../data/index';
+import { searchData } from '../../../utils/data';
 
 const SearchBox = () => {
   const theme = useTheme();

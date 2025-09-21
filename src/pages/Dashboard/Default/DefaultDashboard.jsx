@@ -24,14 +24,7 @@ import {
 import {
   BarChart,
 } from '@mui/x-charts';
-import {
-  summaryCardsData,
-  projectionVsActualData,
-  locationRevenueData,
-  topSellingProductsData,
-  salesTypeData
-} from '../../../data/dashboardData';
-import { AnimatedLine, LinePlot} from '@mui/x-charts/LineChart';
+import { AnimatedLine, LinePlot } from '@mui/x-charts/LineChart';
 import { ChartContainer } from '@mui/x-charts/ChartContainer';
 import { ChartsXAxis } from '@mui/x-charts/ChartsXAxis';
 import { ChartsYAxis } from '@mui/x-charts/ChartsYAxis';
@@ -47,6 +40,15 @@ import { world_map } from './world_map.ts';
 import { MapsComponent, LayersDirective, LayerDirective, MarkersDirective, MarkerDirective, Marker, Inject } from '@syncfusion/ej2-react-maps';
 import { registerLicense } from '@syncfusion/ej2-base';
 import DonutChart from '../../../components/charts/DonutChart.jsx';
+import { formatCurrency, formatNumber, COLORSLIST } from '../../../utils/helpers';
+import {
+  revenueComparisonData,
+  summaryCardsData,
+  projectionVsActualData,
+  locationRevenueData,
+  topSellingProductsData,
+  salesData
+} from '../../../utils/data.js'
 
 
 
@@ -59,65 +61,6 @@ const DefaultDashboard = () => {
   locationRevenueData.forEach(location => {
     location.percentage = (location.revenue / totalRevenue) * 100;
   });
-
-  // Custom Marker Component
-  const CustomMarker = ({ location, color, onClick }) => {
-    const markerSize = Math.max(20, (location.percentage / 100) * 50);
-
-    return (
-      <div
-        style={{
-          width: `${markerSize}px`,
-          height: `${markerSize}px`,
-          backgroundColor: color,
-          borderRadius: '50%',
-          border: '3px solid white',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          color: 'white',
-          transition: 'transform 0.2s ease',
-          transform: 'translate(-50%, -50%)'
-        }}
-        onClick={() => onClick(location)}
-        onMouseEnter={(e) => {
-          e.target.style.transform = 'translate(-50%, -50%) scale(1.1)';
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.transform = 'translate(-50%, -50%) scale(1)';
-        }}
-        title={`${location.name}: $${location.revenue}K (${location.percentage.toFixed(1)}%)`}
-      >
-        ${location.revenue}K
-      </div>
-    );
-  };
-
-  const formatCurrency = (value) => {
-    if (value >= 1000000) {
-      return `$${(value / 1000000).toFixed(1)}M`;
-    } else if (value >= 1000) {
-      return `$${(value / 1000).toFixed(0)}K`;
-    } else {
-      return `$${value.toLocaleString()}`;
-    }
-  };
-
-  const formatNumber = (value) => {
-    if (value >= 1000000) {
-      return `${(value / 1000000).toFixed(1)}M`;
-    } else if (value >= 1000) {
-      return `${(value / 1000).toFixed(1)}K`;
-    } else {
-      return value.toLocaleString();
-    }
-  };
-
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
   const xLabels = projectionVsActualData.map(item => item.month);
   const projections = projectionVsActualData.map(item => item.projections);
@@ -172,19 +115,6 @@ const DefaultDashboard = () => {
     );
   }
 
-
-  const revenueComparisonData = [
-    { month: 'Jan', current: 15, previous: 12 },
-    { month: 'Feb', current: 18, previous: 14 },
-    { month: 'Mar', current: 22, previous: 16 },
-    { month: 'Apr', current: 19, previous: 18 },
-    { month: 'May', current: 25, previous: 20 },
-    { month: 'Jun', current: 28, previous: 22 },
-    { month: 'Jul', current: 30, previous: 24 },
-    { month: 'Aug', current: 32, previous: 26 },
-    { month: 'Sep', current: 35, previous: 28 },
-  ];
-
   // Extract data for chart series
   const months = revenueComparisonData.map((_, index) => index);
   const currentYearData = revenueComparisonData.map(item => item.current);
@@ -198,7 +128,7 @@ const DefaultDashboard = () => {
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, width: '100%' }}>
           <Typography variant="h4" sx={{ fontWeight: 'bold', color: data.textColor, fontSize: { xs: '1.5rem', sm: '2rem' } }}>
-            {data.format === 'currency' ? formatCurrency(data.value) : data.format === 'percentage' ? `${data.value}%` : formatNumber(data.value)}
+            {data.format === 'currency' ? formatCurrency(data.value) : data.format === 'percentage' ? `${data.value}%` : formatNumber(data.value, 4)}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
             <Typography
@@ -221,13 +151,6 @@ const DefaultDashboard = () => {
       </Box>
     </Card>
   );
-
-  const data = [
-    { id: 1, label: 'Direct', value: 30056 },
-    { id: 2, label: 'Affiliate', value: 13518 },
-    { id: 3, label: 'Sponsored', value: 15402 },
-    { id: 4, label: 'E-mail', value: 4896 }
-  ];
 
   return (
     <Box sx={{ p: 0 }}>
@@ -464,7 +387,7 @@ const DefaultDashboard = () => {
                   centerPosition={{ latitude: 0, longitude: 0 }}
                   zoomSettings={{
                     enable: true,
-                    minZoom: 1,    
+                    minZoom: 1,
                     maxZoom: 10,
                   }}
                   titleSettings={{
@@ -623,13 +546,14 @@ const DefaultDashboard = () => {
               {/* Pie Chart */}
               <Box sx={{ height: 150, width: '100%', mb: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <DonutChart
-                  data={data}
+                  data={salesData}
                   width={300}
                   height={150}
                   centerX={150}
                   centerY={75}
                   innerRadius={50}
                   outerRadius={70}
+                  colors={COLORSLIST.slice(0, salesData.length)}
                   showLabels={false}
                   hoverEffect={true}
                   cornerRadius={10}
@@ -641,9 +565,9 @@ const DefaultDashboard = () => {
 
               {/* Sales Type Legend with Values */}
               <Box>
-                {salesTypeData.map((item, index) => (
+                {salesData.map((item, index) => (
                   <Box
-                    key={item.name}
+                    key={item.id}
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -661,17 +585,17 @@ const DefaultDashboard = () => {
                         sx={{
                           width: 12,
                           height: 12,
-                          backgroundColor: COLORS[index % COLORS.length],
+                          backgroundColor: COLORSLIST[index % COLORSLIST.length],
                           borderRadius: '50%',
                           mr: 1.5
                         }}
                       />
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        {item.name}
+                        {item.label}
                       </Typography>
                     </Box>
                     <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                      ${item.value}
+                      ${item.value.toLocaleString()}
                     </Typography>
                   </Box>
                 ))}

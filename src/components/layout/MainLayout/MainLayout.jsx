@@ -1,4 +1,3 @@
-// File: src/components/layout/MainLayout/MainLayout.jsx
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
@@ -36,7 +35,7 @@ const MainLayout = () => {
         }}
       >
         <Header />
-
+        {/* Main Body */}
         <Box
           component="main"
           sx={{

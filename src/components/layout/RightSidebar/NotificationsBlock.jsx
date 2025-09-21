@@ -17,7 +17,7 @@ import {
   Warning
 } from '@mui/icons-material';
 import { useNotificationContext } from '../../../contexts/NotificationContext';
-import { notificationTypes } from '../../../data/index';
+import { notificationTypes } from '../../../utils/data';
 import { formatDistanceToNow } from '../../../utils/timeUtils';
 
 const iconMap = {

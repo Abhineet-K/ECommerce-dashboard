@@ -1,25 +1,80 @@
-// src/utils/helpers.js
-
 // Format currency
-export const formatCurrency = (amount, currency = 'USD', locale = 'en-US') => {
+export const formatCurrency = (
+  amount,
+  currency = 'USD',
+  locale = 'en-US'
+) => {
+  if (amount >= 100000) {
+    // Compact notation for large numbers (100K, 1M, etc.)
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency,
+      notation: 'compact',
+      compactDisplay: 'short',
+      maximumFractionDigits: 1, // e.g., 1.2M
+    }).format(amount);
+  }
+
+  // Normal currency formatting for smaller numbers
   return new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(amount);
 };
 
-// Format large numbers with abbreviations
-export const formatNumber = (num) => {
-  if (num >= 1000000) {
-    return (num / 1000000).toFixed(1) + 'M';
+
+/**
+ * Format numbers with K/M suffix and control digit + decimal limits
+ * 
+ * @param {number} num - The number to format
+ * @param {number} digitLimit - Max digits before shortening (default: 3)
+ * @param {number} decimalLimit - Decimal places for shortened numbers (default: 0)
+ * @returns {string} - Formatted number
+ */
+export const formatNumber = (num, digitLimit = 3, decimalLimit = 0) => {
+  if (num === null || num === undefined || isNaN(num)) return "0";
+
+  const absNum = Math.abs(num);
+  const sign = num < 0 ? "-" : "";
+
+  // Convert number to string to check digit length
+  const digitCount = absNum.toString().length;
+
+  // If within digit limit → return raw number
+  if (digitCount <= digitLimit) {
+    return sign + absNum.toString();
   }
-  if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'K';
+
+  // Otherwise format into K / M
+  if (absNum >= 1_000_000) {
+    return (
+      sign +
+      (absNum / 1_000_000).toFixed(decimalLimit) +
+      "M"
+    );
   }
-  return num.toString();
+  if (absNum >= 1_000) {
+    return (
+      sign +
+      (absNum / 1_000).toFixed(decimalLimit) +
+      "K"
+    );
+  }
+
+  return sign + absNum.toString();
 };
+
+export const COLORSLIST = [
+  '#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+  '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+  '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+  '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+  '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+  '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399'
+];
+
 
 // Format percentage
 export const formatPercentage = (value, decimals = 1) => {
@@ -48,69 +103,56 @@ export const formatRelativeTime = (date) => {
 };
 
 // Format date
+/**
+ * Formats a date with flexible options for relative or absolute formatting
+ * @param {Date|string|number} date - The date to format
+ * @param {Object} options - Formatting options
+ * @param {boolean} options.relative - Whether to use relative formatting (e.g., "2 hours ago")
+ * @param {number} options.relativeThreshold - Days after which to switch to absolute format (default: 7)
+ * @param {Intl.DateTimeFormatOptions} options.absolute - Options for absolute date formatting
+ * @param {string} options.locale - Locale for formatting (default: 'en-US')
+ * @returns {string} Formatted date string
+ */
 export const formatDate = (date, options = {}) => {
-  const defaultOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    ...options
-  };
-  
-  return new Date(date).toLocaleDateString('en-US', defaultOptions);
-};
+  const {
+    relative = true,
+    relativeThreshold = 2,
+    absolute = { year: 'numeric', month: 'short', day: 'numeric' },
+    locale = 'en-US'
+  } = options;
 
-// Debounce function
-export const debounce = (func, delay) => {
-  let timeoutId;
-  return (...args) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => func.apply(null, args), delay);
-  };
-};
-
-// Throttle function
-export const throttle = (func, limit) => {
-  let inThrottle;
-  return function() {
-    const args = arguments;
-    const context = this;
-    if (!inThrottle) {
-      func.apply(context, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
-};
-
-// Generate unique ID
-export const generateId = () => {
-  return Math.random().toString(36).substr(2, 9);
-};
-
-// Clamp number between min and max
-export const clamp = (num, min, max) => {
-  return Math.min(Math.max(num, min), max);
-};
-
-// Check if object is empty
-export const isEmpty = (obj) => {
-  return Object.keys(obj).length === 0;
-};
-
-// Deep clone object
-export const deepClone = (obj) => {
-  if (obj === null || typeof obj !== 'object') return obj;
-  if (obj instanceof Date) return new Date(obj.getTime());
-  if (obj instanceof Array) return obj.map(item => deepClone(item));
-  if (obj instanceof Object) {
-    const clonedObj = {};
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        clonedObj[key] = deepClone(obj[key]);
-      }
-    }
-    return clonedObj;
+  // Handle invalid dates
+  const dateObj = new Date(date);
+  if (isNaN(dateObj.getTime())) {
+    return 'Invalid date';
   }
+
+  // If relative formatting is disabled, return absolute format
+  if (!relative) {
+    return dateObj.toLocaleDateString(locale, absolute);
+  }
+
+  // Calculate time differences
+  const now = new Date();
+  const diff = now - dateObj;
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+
+  // Handle future dates
+  if (diff < 0) {
+    return dateObj.toLocaleDateString(locale, absolute);
+  }
+
+  // Relative formatting for recent dates
+  if (minutes < 1) return 'Just now';
+  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+  if (days === 1) return 'Yesterday';
+  if (days < relativeThreshold) return `${days} day${days === 1 ? '' : 's'} ago`;
+
+  // Fall back to absolute formatting for older dates
+  return dateObj.toLocaleDateString(locale, absolute);
 };
 
 // Sort array of objects by key
@@ -118,7 +160,7 @@ export const sortBy = (array, key, direction = 'asc') => {
   return [...array].sort((a, b) => {
     const aVal = getNestedValue(a, key);
     const bVal = getNestedValue(b, key);
-    
+
     if (direction === 'asc') {
       return aVal > bVal ? 1 : -1;
     }
@@ -134,107 +176,13 @@ export const getNestedValue = (obj, path) => {
 // Filter array by search term
 export const filterBySearch = (array, searchTerm, searchFields) => {
   if (!searchTerm) return array;
-  
+
   const term = searchTerm.toLowerCase();
-  
+
   return array.filter(item => {
     return searchFields.some(field => {
       const value = getNestedValue(item, field);
       return value && value.toString().toLowerCase().includes(term);
     });
   });
-};
-
-// Paginate array
-export const paginate = (array, page, limit) => {
-  const startIndex = (page - 1) * limit;
-  const endIndex = startIndex + limit;
-  
-  return {
-    data: array.slice(startIndex, endIndex),
-    pagination: {
-      currentPage: page,
-      totalPages: Math.ceil(array.length / limit),
-      totalItems: array.length,
-      itemsPerPage: limit,
-      hasNextPage: endIndex < array.length,
-      hasPreviousPage: page > 1,
-    }
-  };
-};
-
-// Get initials from name
-export const getInitials = (name) => {
-  return name
-    .split(' ')
-    .map(n => n.charAt(0))
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-};
-
-// Validate email
-export const isValidEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-// Generate random color
-export const getRandomColor = () => {
-  const colors = [
-    '#3b82f6', '#ef4444', '#10b981', '#f59e0b', 
-    '#8b5cf6', '#06b6d4', '#f97316', '#84cc16'
-  ];
-  return colors[Math.floor(Math.random() * colors.length)];
-};
-
-// Calculate percentage change
-export const calculatePercentageChange = (current, previous) => {
-  if (previous === 0) return current > 0 ? 100 : 0;
-  return ((current - previous) / previous) * 100;
-};
-
-// Truncate text
-export const truncateText = (text, maxLength) => {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
-};
-
-// Local storage helpers
-export const storage = {
-  get: (key, defaultValue = null) => {
-    try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : defaultValue;
-    } catch {
-      return defaultValue;
-    }
-  },
-  
-  set: (key, value) => {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-      return true;
-    } catch {
-      return false;
-    }
-  },
-  
-  remove: (key) => {
-    try {
-      localStorage.removeItem(key);
-      return true;
-    } catch {
-      return false;
-    }
-  },
-  
-  clear: () => {
-    try {
-      localStorage.clear();
-      return true;
-    } catch {
-      return false;
-    }
-  }
 };

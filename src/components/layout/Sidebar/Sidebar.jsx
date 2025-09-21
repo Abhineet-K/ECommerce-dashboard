@@ -11,7 +11,7 @@ import {
 import { useAppContext } from '../../../contexts/AppContext';
 import FavoritesRecent from './FavoritesRecent';
 import NavigationSection from './NavigationSection';
-import { navigationData } from '../../../data/index';
+import { navigationData } from '../../../utils/data';
 
 const Sidebar = () => {
   const theme = useTheme();

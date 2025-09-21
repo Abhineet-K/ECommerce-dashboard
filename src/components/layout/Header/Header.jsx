@@ -11,7 +11,6 @@ import { useAppContext } from '../../../contexts/AppContext';
 import HeaderActions from './HeaderActions';
 import Breadcrumb from './Breadcrumb';
 import FavoriteButton from '../../common/FavoriteButton';
-import { Menu } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 
 const Header = () => {

@@ -9,7 +9,7 @@ import {
   Avatar,
   useTheme
 } from '@mui/material';
-import { initialActivities } from '../../../data/index';
+import { initialActivities } from '../../../utils/data';
 import { formatDistanceToNow } from '../../../utils/timeUtils';
 
 const ActivitiesBlock = () => {

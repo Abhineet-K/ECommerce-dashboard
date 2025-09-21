@@ -10,7 +10,7 @@ import {
   Avatar,
   useTheme
 } from '@mui/material';
-import { contactsData } from '../../../data/index';
+import { contactsData } from '../../../utils/data';
 
 const ContactsBlock = () => {
   const theme = useTheme();
