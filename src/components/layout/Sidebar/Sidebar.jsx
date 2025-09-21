@@ -74,21 +74,22 @@ const Sidebar = () => {
           variant="temporary"
           open={leftSidebarOpen}
           onClose={toggleLeftSidebar}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            '& .MuiDrawer-paper': {
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              '--Paper-shadow': 'none',
+              '--Paper-overlay': 'none',
+              boxShadow: 'none',
               boxSizing: 'border-box',
               width: sidebarWidth,
               backgroundColor: theme.palette.background.default,
               borderRight: `1px solid ${theme.palette.layoutBorder}`,
-              boxShadow: 'none'
             },
           }}
         >
+
           {drawerContent}
-        </Drawer>
+        </Drawer >
       ) : (
         <Drawer
           variant="persistent"
