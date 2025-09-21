@@ -1,5 +1,6 @@
 // File: src/pages/Dashboard/Default/DefaultDashboard.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Grid,
@@ -120,8 +121,20 @@ const DefaultDashboard = () => {
   const currentYearData = revenueComparisonData.map(item => item.current);
   const previousYearData = revenueComparisonData.map(item => item.previous);
 
-  const SummaryCard = ({ data }) => (
-    <Card sx={{ height: '100%', p: 3, backgroundColor: theme.palette.primary[data.bgColor], boxShadow: 'none', border: 'none' }}>
+  const SummaryCard = ({ data }) => {
+    const CardContent = (<Card
+      sx={{
+        height: '100%',
+        p: 3,
+        backgroundColor: theme.palette.primary[data.bgColor],
+        boxShadow: 'none',
+        border: 'none',
+        transition: 'box-shadow 0.3s ease',
+        '&:hover': {
+          boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
+        },
+      }}
+    >
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-around', height: '100%' }}>
         <Typography variant="h6" gutterBottom sx={{ fontSize: '0.875rem', color: data.textColor ? data.textColor : theme.palette.text.primary, fontWeight: 'bold' }}>
           {data.title}
@@ -149,8 +162,20 @@ const DefaultDashboard = () => {
           </Box>
         </Box>
       </Box>
-    </Card>
-  );
+    </Card>);
+
+
+    return data?.pageUrl ? (
+      <Link
+        to={data.pageUrl}
+        style={{ textDecoration: 'none' }}
+      >
+        {CardContent}
+      </Link>
+    ) : (
+      CardContent
+    );
+  };
 
   return (
     <Box sx={{ p: 0 }}>
@@ -173,7 +198,12 @@ const DefaultDashboard = () => {
 
         {/* Projection vs Actual Chart */}
         <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 4, lg: 5 }} sx={{ height: '100%' }}>
-          <Card sx={{ height: '100%', p: 0, boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light }}>
+          <Card sx={{
+            height: '100%', p: 0, boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
+            '&:hover': {
+              boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
+            },
+          }}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', mb: 0, p: 3 }}>
               Projections vs Actuals
             </Typography>
@@ -212,7 +242,12 @@ const DefaultDashboard = () => {
       <Grid container spacing={3} sx={{ mb: 4 }} columns={{ xs: 2, sm: 4, md: 8, lg: 12 }}>
         {/* Revenue Line Chart */}
         <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 4, lg: 8 }}>
-          <Card sx={{ boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light }}>
+          <Card sx={{
+            boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
+            '&:hover': {
+              boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
+            },
+          }}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', p: 3, flexWrap: 'wrap', gap: 3 }}>
               <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                 Revenue
@@ -364,7 +399,12 @@ const DefaultDashboard = () => {
 
         {/* World Map + Location Revenue */}
         <Grid item xs={12} lg={4} size={{ xs: 2, sm: 4, md: 4, lg: 4 }}>
-          <Card sx={{ height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light }}>
+          <Card sx={{
+            height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
+            '&:hover': {
+              boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
+            },
+          }}>
             <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 2 }}>
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', textAlign: 'center', mb: 0 }}>
                 Revenue by Location
@@ -474,7 +514,12 @@ const DefaultDashboard = () => {
       <Grid container spacing={3} columns={{ xs: 2, sm: 4, md: 8, lg: 12 }}>
         {/* Top Selling Products Table */}
         <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 4, lg: 8 }}>
-          <Card sx={{ height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light }}>
+          <Card sx={{
+            height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
+            '&:hover': {
+              boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
+            },
+          }}>
             <CardContent sx={{ p: 3 }}>
               <Box sx={{ pb: 0 }}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
@@ -537,7 +582,12 @@ const DefaultDashboard = () => {
 
         {/* Sales Type Pie Chart */}
         <Grid item xs={12} lg={4} size={{ xs: 2, sm: 4, md: 4 }}>
-          <Card sx={{ height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light }}>
+          <Card sx={{
+            height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
+            '&:hover': {
+              boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
+            },
+          }}>
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
                 Total Sales

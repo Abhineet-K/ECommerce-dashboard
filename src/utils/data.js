@@ -237,7 +237,8 @@ export const summaryCardsData = [
     format: 'number',
     icon: '<People />',
     bgColor: 'blue',
-    textColor: '#1c1c1c'
+    textColor: '#1c1c1c',
+    pageUrl: '/dashboard/e-commerce/customers'
   },
   {
     title: 'Orders',
@@ -247,6 +248,7 @@ export const summaryCardsData = [
     format: 'number',
     icon: '<ShoppingCart />',
     bgColor: 'light',
+    pageUrl: '/dashboard/e-commerce/orders'
   },
   {
     title: 'Revenue',
