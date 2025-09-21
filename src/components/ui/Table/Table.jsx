@@ -533,11 +533,14 @@ const OrdersTable = ({
                 paddingRight: '16px',
                 paddingTop: '8px',
                 paddingBottom: '8px',
-                border: '1px solid #E5E7EB',
+                border: '1px solid',
+                borderColor: theme.palette.mode === 'dark' ? '#FFFFFF1A' : '#1C1C1C1A',
                 borderRadius: '8px',
                 fontSize: '14px',
                 width: '250px',
-                outline: 'none'
+                outline: 'none',
+                background: theme.palette.mode === 'dark' ? '#1C1C1C66' : '#FFFFFF66',
+                color: theme.palette.text.primary
               }}
             />
             {searchTerm && (
