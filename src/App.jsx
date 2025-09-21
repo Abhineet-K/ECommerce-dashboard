@@ -7,6 +7,7 @@ import MainLayout from './components/layout/MainLayout/MainLayout';
 import DefaultDashboard from './pages/Dashboard/Default/DefaultDashboard';
 import ECommerceOrders from './pages/Dashboard/ECommerce/Orders/ECommerceOrders';
 import Customers from './pages/Customers/Customers';
+import './styles/globals.css';
 
 function App() {
   const { theme } = useThemeContext();
