@@ -24,6 +24,7 @@ const OrdersTable = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [filters, setFilters] = useState({});
+  const [hoveredRow, setHoveredRow] = useState(null);
   const theme = useTheme();
 
   // Get nested value from object
@@ -632,10 +633,14 @@ const OrdersTable = ({
                   style={{
                     borderBottom: '1px solid',
                     borderColor: theme.palette.divider,
-                    backgroundColor: selectedRows.has(index) ? theme.palette.background.paper : theme.palette.background.default,
-                    cursor: onRowClick ? 'pointer' : 'default'
+                    backgroundColor: selectedRows.has(index)
+                      ? theme.palette.background.paper
+                      : theme.palette.background.default,
+                    cursor: onRowClick ? 'pointer' : 'default',
                   }}
                   onClick={() => onRowClick?.(row, index)}
+                  onMouseEnter={() => setHoveredRow(index)}
+                  onMouseLeave={() => setHoveredRow(null)}
                 >
                   {enableRowSelection && (
                     <td style={{ padding: '16px 20px' }}>
@@ -644,10 +649,19 @@ const OrdersTable = ({
                         checked={selectedRows.has(index)}
                         onChange={() => handleRowSelect(index)}
                         onClick={(e) => e.stopPropagation()}
-                        style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                        style={{
+                          width: '16px',
+                          height: '16px',
+                          cursor: 'pointer',
+                          visibility:
+                            selectedRows.has(index) || hoveredRow === index
+                              ? 'visible'
+                              : 'hidden',
+                        }}
                       />
                     </td>
                   )}
+
                   {columns.map((column) => (
                     <td
                       key={column.key}
@@ -672,7 +686,7 @@ const OrdersTable = ({
                       cursor: 'pointer',
                       color: '#6B7280'
                     }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ transform: 'rotate(90deg)' }}>
                         <path d="M12 8C13.1 8 14 7.1 14 6C14 4.9 13.1 4 12 4C10.9 4 10 4.9 10 6C10 7.1 10.9 8 12 8ZM12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10ZM12 16C10.9 16 10 16.9 10 18C10 19.1 10.9 20 12 20C13.1 20 14 19.1 14 18C14 16.9 13.1 16 12 16Z" />
                       </svg>
                     </button>
