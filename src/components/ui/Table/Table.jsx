@@ -601,7 +601,7 @@ const OrdersTable = ({
                   }}
                   onClick={() => column.sortable && handleSort(column.sortKey || column.key)}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', width: 'max-content', gap: '4px' }}>
                     {column.label}
                     <SortIcon column={column} />
                     <FilterDropdown column={column} />
@@ -620,7 +620,7 @@ const OrdersTable = ({
                     padding: '60px 20px',
                     textAlign: 'center',
                     color: theme.palette.text.secondary,
-                    fontSize: '16px'
+                    fontSize: '16px',
                   }}
                 >
                   {emptyMessage}

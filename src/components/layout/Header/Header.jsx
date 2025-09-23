@@ -1,4 +1,3 @@
-// File: src/components/layout/Header/header.jsx //
 import React from 'react';
 import {
   AppBar,

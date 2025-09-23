@@ -1,4 +1,3 @@
-// File: src/components/layout/Sidebar/NavigationSection.jsx
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import NavigationTab from './NavigationTab';

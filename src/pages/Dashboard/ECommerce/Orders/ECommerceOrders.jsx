@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Box, Typography} from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import OrdersTable from '../../../../components/ui/Table/Table';
 import { ordersData } from '../../../../utils/data';
 import { formatDate } from '../../../../utils/helpers';
@@ -22,7 +22,11 @@ const Orders = () => {
       sortable: true,
       width: '120px',
       render: (value) => (
-        <span style={{ fontWeight: '500' }}>
+        <span style={{
+          fontWeight: '500', whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }}>
           {value}
         </span>
       )
@@ -31,7 +35,7 @@ const Orders = () => {
       key: 'user',
       label: 'User',
       sortable: true,
-      sortKey: 'user.name', 
+      sortKey: 'user.name',
       render: (value) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <img
@@ -46,7 +50,10 @@ const Orders = () => {
           />
           <span style={{
             fontSize: '14px',
-            fontWeight: '500'
+            fontWeight: '500',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
           }}>
             {value.name}
           </span>
@@ -58,7 +65,11 @@ const Orders = () => {
       label: 'Project',
       sortable: true,
       render: (value) => (
-        <span style={{ fontSize: '14px', }}>
+        <span style={{
+          fontSize: '14px', whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }}>
           {value}
         </span>
       )
@@ -68,7 +79,11 @@ const Orders = () => {
       label: 'Address',
       sortable: true,
       render: (value) => (
-        <span style={{ fontSize: '14px', }}>
+        <span style={{
+          fontSize: '14px', whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }}>
           {value}
         </span>
       )
@@ -79,8 +94,12 @@ const Orders = () => {
       sortable: true,
       render: (value) => (
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <svg width="12" height="13" viewBox="0 0 12 13" fill="none" class="theme-contrast--icon"><path id="icon--border" d="M11 1H9.5V.5a.5.5 0 0 0-1 0V1h-5V.5a.5.5 0 0 0-1 0V1H1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1M2.5 2v.5a.5.5 0 1 0 1 0V2h5v.5a.5.5 0 1 0 1 0V2H11v2H1V2zM11 12H1V5h10z"/></svg>
-          <span style={{ fontSize: '14px' }}>
+          <svg width="12" height="13" viewBox="0 0 12 13" fill="none" class="theme-contrast--icon"><path id="icon--border" d="M11 1H9.5V.5a.5.5 0 0 0-1 0V1h-5V.5a.5.5 0 0 0-1 0V1H1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1M2.5 2v.5a.5.5 0 1 0 1 0V2h5v.5a.5.5 0 1 0 1 0V2H11v2H1V2zM11 12H1V5h10z" /></svg>
+          <span style={{
+            fontSize: '14px', whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }}>
             {formatDate(value)}
           </span>
         </div>
@@ -93,22 +112,27 @@ const Orders = () => {
       filterable: false,
       filterOptions: ['In Progress', 'Complete', 'Pending', 'Approved', 'Rejected'],
       render: (value, row) => <><span style={{
-      display: 'inline-flex',
-      alignItems: 'center',
-      padding: '4px 0',
-      fontSize: '14px',
-      fontWeight: '500',
-      color: row.statusColor,
-    }}>
-      <span style={{
-        width: '6px',
-        height: '6px',
-        borderRadius: '50%',
-        backgroundColor: row.statusColor,
-        marginRight: '8px'
-      }} />
-      {value}
-    </span></>
+        display: 'inline-flex',
+        alignItems: 'center',
+        padding: '4px 0',
+        fontSize: '14px',
+        fontWeight: '500',
+        color: row.statusColor,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis'
+      }}>
+        <span style={{
+          width: '6px',
+          height: '6px',
+          borderRadius: '50%',
+          backgroundColor: row.statusColor,
+          marginRight: '8px',
+
+          
+        }} />
+        {value}
+      </span></>
     },
   ];
 
@@ -116,7 +140,7 @@ const Orders = () => {
     <Box sx={{ p: 1 }}>
       <Grid container spacing={3} columns={{ xs: 4, sm: 8, md: 12 }}>
         {/* Header */}
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h4" fontWeight="bold">
             Orders
           </Typography>

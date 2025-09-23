@@ -1,4 +1,3 @@
-// File: src/components/layout/Sidebar/NavigationTab.jsx
 import {
   Box,
   ListItem,

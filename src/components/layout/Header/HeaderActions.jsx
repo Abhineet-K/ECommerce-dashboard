@@ -1,4 +1,3 @@
-// File: src/components/layout/Header/HeaderActions.jsx //
 import React from 'react';
 import { Box, IconButton, Badge } from '@mui/material';
 import {

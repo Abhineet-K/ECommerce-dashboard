@@ -1,4 +1,3 @@
-// File: src/components/layout/Sidebar/Sidebar.jsx //
 import React from 'react';
 import {
   Drawer,

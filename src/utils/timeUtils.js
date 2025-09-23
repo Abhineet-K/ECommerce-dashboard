@@ -1,4 +1,3 @@
-// File: src/utils/timeUtils.js
 export const formatDistanceToNow = (timestamp) => {
   const now = Date.now();
   const diff = now - timestamp;
