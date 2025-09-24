@@ -25,12 +25,70 @@ const OrdersTable = ({
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [filters, setFilters] = useState({});
   const [hoveredRow, setHoveredRow] = useState(null);
-  const theme = useTheme();
 
+  const theme = useTheme();
   // Get nested value from object
   const getNestedValue = (obj, path) => {
     return path.split('.').reduce((current, key) => current?.[key], obj);
   };
+
+  // Filtered and sorted data
+  const processedData = useMemo(() => {
+    let filtered = [...data];
+
+    // Apply search
+    if (searchTerm && enableSearch) {
+      filtered = filtered.filter(row =>
+        columns.some(col => {
+          const value = getNestedValue(row, col.sortKey || col.key);
+          if (typeof value === 'string') {
+            return value.toLowerCase().includes(searchTerm.toLowerCase());
+          }
+          if (typeof value === 'object' && value?.name) {
+            return value.name.toLowerCase().includes(searchTerm.toLowerCase());
+          }
+          return false;
+        })
+      );
+    }
+
+    // Apply filters
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        filtered = filtered.filter(row => getNestedValue(row, key) === value);
+      }
+    });
+
+    // Apply sorting
+    if (sortConfig.key && enableSorting) {
+      filtered.sort((a, b) => {
+        const aVal = getNestedValue(a, sortConfig.key);
+        const bVal = getNestedValue(b, sortConfig.key);
+
+        if (aVal === bVal) return 0;
+
+        let comparison = 0;
+        if (typeof aVal === 'string' && typeof bVal === 'string') {
+          comparison = aVal.localeCompare(bVal);
+        } else if (aVal instanceof Date && bVal instanceof Date) {
+          comparison = aVal.getTime() - bVal.getTime();
+        } else {
+          comparison = aVal < bVal ? -1 : 1;
+        }
+
+        return sortConfig.direction === 'desc' ? -comparison : comparison;
+      });
+    }
+
+    return filtered;
+  }, [data, searchTerm, filters, sortConfig, columns, enableSearch, enableSorting]);
+
+  // Reset page when data changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filters]);
+
+
 
   // Check for missing data or columns
   if (!data || !Array.isArray(data)) {
@@ -111,57 +169,6 @@ const OrdersTable = ({
     );
   }
 
-  // Filtered and sorted data
-  const processedData = useMemo(() => {
-    let filtered = [...data];
-
-    // Apply search
-    if (searchTerm && enableSearch) {
-      filtered = filtered.filter(row =>
-        columns.some(col => {
-          const value = getNestedValue(row, col.sortKey || col.key);
-          if (typeof value === 'string') {
-            return value.toLowerCase().includes(searchTerm.toLowerCase());
-          }
-          if (typeof value === 'object' && value?.name) {
-            return value.name.toLowerCase().includes(searchTerm.toLowerCase());
-          }
-          return false;
-        })
-      );
-    }
-
-    // Apply filters
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value) {
-        filtered = filtered.filter(row => getNestedValue(row, key) === value);
-      }
-    });
-
-    // Apply sorting
-    if (sortConfig.key && enableSorting) {
-      filtered.sort((a, b) => {
-        const aVal = getNestedValue(a, sortConfig.key);
-        const bVal = getNestedValue(b, sortConfig.key);
-
-        if (aVal === bVal) return 0;
-
-        let comparison = 0;
-        if (typeof aVal === 'string' && typeof bVal === 'string') {
-          comparison = aVal.localeCompare(bVal);
-        } else if (aVal instanceof Date && bVal instanceof Date) {
-          comparison = aVal.getTime() - bVal.getTime();
-        } else {
-          comparison = aVal < bVal ? -1 : 1;
-        }
-
-        return sortConfig.direction === 'desc' ? -comparison : comparison;
-      });
-    }
-
-    return filtered;
-  }, [data, searchTerm, filters, sortConfig, columns]);
-
   // Pagination
   const totalPages = Math.ceil(processedData.length / pageSize);
   const paginatedData = enablePagination
@@ -217,11 +224,6 @@ const OrdersTable = ({
     setPageSize(size);
     setCurrentPage(1);
   };
-
-  // Reset page when data changes
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, filters]);
 
   // Components
   const StatusBadge = ({ status, color }) => (
