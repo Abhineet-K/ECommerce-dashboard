@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -48,13 +48,11 @@ import {
   topSellingProductsData,
   salesData
 } from '../../../utils/data.js';
-import { useAppContext } from '../../../contexts/AppContext.jsx'
 
 
 const DefaultDashboard = () => {
   registerLicense('Ngo9BigBOggjGyl/Vkd+XU9FcVRDXXxLfkx0RWFcb19wflVAallZVAciSV9jS3tTf0djWH9fc3RTQ2NaUU91Xg==');
   const theme = useTheme();
-  const { rightSidebarOpen, leftSidebarOpen } = useAppContext();
 
   const totalRevenue = locationRevenueData.reduce((sum, location) => sum + location.revenue, 0);
   locationRevenueData.forEach(location => {
