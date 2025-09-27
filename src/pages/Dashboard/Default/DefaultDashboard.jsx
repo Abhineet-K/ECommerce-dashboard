@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { use } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box,
@@ -13,7 +13,6 @@ import {
   TableHead,
   TableRow,
   useTheme,
-  useMediaQuery,
   LinearProgress,
   Divider
 } from '@mui/material';
@@ -49,16 +48,13 @@ import {
   topSellingProductsData,
   salesData
 } from '../../../utils/data.js';
-import { useAppContext } from '../../../contexts/AppContext.jsx';
-
+import { useAppContext } from '../../../contexts/AppContext.jsx'
 
 
 const DefaultDashboard = () => {
   registerLicense('Ngo9BigBOggjGyl/Vkd+XU9FcVRDXXxLfkx0RWFcb19wflVAallZVAciSV9jS3tTf0djWH9fc3RTQ2NaUU91Xg==');
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const { leftSidebarOpen, rightSidebarOpen } = useAppContext();
+  const { rightSidebarOpen, leftSidebarOpen } = useAppContext();
 
   const totalRevenue = locationRevenueData.reduce((sum, location) => sum + location.revenue, 0);
   locationRevenueData.forEach(location => {
@@ -127,7 +123,7 @@ const DefaultDashboard = () => {
     const CardContent = (<Card
       sx={{
         height: '100%',
-        p: { xs: 1.5, sm: 2, md: 3 },
+        p: { xs: 1.5, sm: 2 },
         backgroundColor: theme.palette.primary[data.bgColor],
         boxShadow: 'none',
         border: 'none',
@@ -141,11 +137,11 @@ const DefaultDashboard = () => {
         <Typography variant="h6" gutterBottom sx={{ color: data.textColor ? data.textColor : theme.palette.text.primary, fontWeight: 'bold' }}>
           {data.title}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, width: '100%' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1px', width: '100%' }}>
           <Typography variant="h3" sx={{ fontWeight: 'bold', color: data.textColor }}>
             {data.format === 'currency' ? formatCurrency(data.value) : data.format === 'percentage' ? `${data.value}%` : formatNumber(data.value, 4)}
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', ml: '1px' }}>
             <Typography
               sx={{
                 color: data.trend === 'up' ? 'success.main' : 'error.main',
@@ -187,10 +183,10 @@ const DefaultDashboard = () => {
       {/* First Row: Summary Cards + Projection vs Actual Chart */}
       <Grid container spacing={3} sx={{ mb: 4 }} columns={{ xs: 2, sm: 4, md: 8, lg: 12 }}>
         {/* Summary Cards Grid */}
-        <Grid item xs={1} lg={6} size={{ xs: 2, sm: 4, md: 3, lg: 5 }} >
+        <Grid item xs={1} lg={6} size={{ xs: 2, sm: 4, lg: 5 }}>
           <Grid container spacing={2} height={'100%'}>
             {summaryCardsData.map((card, index) => (
-              <Grid item xs={12} sm={6} key={index} size={6} sx={{ minWidth: { md: '220px', lg: '220px'} }}>
+              <Grid item xs={12} sm={6} key={index} size={6}>
                 <SummaryCard data={card} />
               </Grid>
             ))}
@@ -198,7 +194,7 @@ const DefaultDashboard = () => {
         </Grid>
 
         {/* Projection vs Actual Chart */}
-        <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 5, lg: 7 }} sx={{ height: '100%' }}>
+        <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, lg: 7 }} sx={{ height: '100%' }}>
           <Card sx={{
             height: '100%', p: 0, boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
             '&:hover': {
@@ -399,7 +395,7 @@ const DefaultDashboard = () => {
         </Grid>
 
         {/* World Map + Location Revenue */}
-        <Grid item xs={12} lg={4} size={{ xs: 2, sm: 4, md: 3, lg: 4 }} sx={{}}>
+        <Grid item xs={12} lg={4} size={{ xs: 2, sm: 4, md: 3, lg: 4 }}>
           <Card sx={{
             height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
             '&:hover': {

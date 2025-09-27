@@ -232,7 +232,7 @@ export const summaryCardsData = [
   {
     title: 'Customers',
     value: 3781,
-    change: 11.01,
+    change: 11.1,
     trend: 'up',
     format: 'number',
     icon: '<People />',
@@ -243,7 +243,7 @@ export const summaryCardsData = [
   {
     title: 'Orders',
     value: 1219,
-    change: -0.03,
+    change: -0.3,
     trend: 'down',
     format: 'number',
     icon: '<ShoppingCart />',
@@ -253,7 +253,7 @@ export const summaryCardsData = [
   {
     title: 'Revenue',
     value: 695000,
-    change: 15.03,
+    change: 15.3,
     trend: 'up',
     format: 'currency',
     icon: '<AttachMoney />',
@@ -262,7 +262,7 @@ export const summaryCardsData = [
   {
     title: 'Growth',
     value: 30.1,
-    change: 6.08,
+    change: 6.8,
     trend: 'up',
     format: 'percentage',
     icon: '<ShowChart />',
