@@ -4,9 +4,9 @@ import { BrowserRouter } from 'react-router-dom'
 import CssBaseline from '@mui/material/CssBaseline'
 import App from './App.jsx'
 import { AppProvider } from './providers/AppProvider.jsx'
-import { NotificationProvider } from './contexts/NotificationContext.jsx'
-import { NavigationProvider } from './contexts/NavigationContext.jsx'
-import { ThemeContextProvider } from './contexts/ThemeContext.jsx'
+import { NotificationProvider } from './providers/NotificationProvider.jsx'
+import { NavigationProvider } from './providers/NavigationProvider.jsx'
+import { ThemeContextProvider } from './providers/ThemeContextProvider.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

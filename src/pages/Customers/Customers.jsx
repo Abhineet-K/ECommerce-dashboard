@@ -1,4 +1,3 @@
-// src/pages/Customers/Customers.jsx
 import React from 'react';
 import {
   Box,

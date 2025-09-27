@@ -1,4 +1,3 @@
-// File: src/components/layout/RightSidebar/ContactsBlock.jsx
 import React from 'react';
 import {
   Box,

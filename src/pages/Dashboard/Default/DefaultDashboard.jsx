@@ -1,4 +1,3 @@
-// File: src/pages/Dashboard/Default/DefaultDashboard.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -14,7 +13,6 @@ import {
   TableHead,
   TableRow,
   useTheme,
-  useMediaQuery,
   LinearProgress,
   Divider
 } from '@mui/material';
@@ -49,14 +47,12 @@ import {
   locationRevenueData,
   topSellingProductsData,
   salesData
-} from '../../../utils/data.js'
-
+} from '../../../utils/data.js';
 
 
 const DefaultDashboard = () => {
   registerLicense('Ngo9BigBOggjGyl/Vkd+XU9FcVRDXXxLfkx0RWFcb19wflVAallZVAciSV9jS3tTf0djWH9fc3RTQ2NaUU91Xg==');
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const totalRevenue = locationRevenueData.reduce((sum, location) => sum + location.revenue, 0);
   locationRevenueData.forEach(location => {
@@ -125,7 +121,7 @@ const DefaultDashboard = () => {
     const CardContent = (<Card
       sx={{
         height: '100%',
-        p: 3,
+        p: { xs: 1.5, sm: 2 },
         backgroundColor: theme.palette.primary[data.bgColor],
         boxShadow: 'none',
         border: 'none',
@@ -135,17 +131,16 @@ const DefaultDashboard = () => {
         },
       }}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-around', height: '100%' }}>
-        <Typography variant="h6" gutterBottom sx={{ fontSize: '0.875rem', color: data.textColor ? data.textColor : theme.palette.text.primary, fontWeight: 'bold' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'space-around', gap: 1 , height: '100%' }}>
+        <Typography variant="h6" gutterBottom sx={{ color: data.textColor ? data.textColor : theme.palette.text.primary, fontWeight: 'bold' }}>
           {data.title}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, width: '100%' }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', color: data.textColor, fontSize: { xs: '1.5rem', sm: '2rem' } }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1px', width: '100%' }}>
+          <Typography variant="h3" sx={{ fontWeight: 'bold', color: data.textColor }}>
             {data.format === 'currency' ? formatCurrency(data.value) : data.format === 'percentage' ? `${data.value}%` : formatNumber(data.value, 4)}
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', ml: '1px' }}>
             <Typography
-              variant="caption"
               sx={{
                 color: data.trend === 'up' ? 'success.main' : 'error.main',
                 mr: 0.5,
@@ -184,12 +179,12 @@ const DefaultDashboard = () => {
       </Typography>
 
       {/* First Row: Summary Cards + Projection vs Actual Chart */}
-      <Grid container spacing={3} sx={{ mb: 4 }} columns={{ xs: 2, sm: 4, md: 8, lg: 9 }}>
+      <Grid container spacing={3} sx={{ mb: 4 }} columns={{ xs: 2, sm: 4, md: 8, lg: 12 }}>
         {/* Summary Cards Grid */}
-        <Grid item xs={1} lg={6} size={{ xs: 2, sm: 4, md: 4 }} >
+        <Grid item xs={1} lg={6} size={{ xs: 2, sm: 4, lg: 5 }}>
           <Grid container spacing={2} height={'100%'}>
             {summaryCardsData.map((card, index) => (
-              <Grid item xs={12} sm={6} key={index} size={isMobile ? 6 : 6} >
+              <Grid item xs={12} sm={6} key={index} size={6}>
                 <SummaryCard data={card} />
               </Grid>
             ))}
@@ -197,14 +192,14 @@ const DefaultDashboard = () => {
         </Grid>
 
         {/* Projection vs Actual Chart */}
-        <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 4, lg: 5 }} sx={{ height: '100%' }}>
+        <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, lg: 7 }} sx={{ height: '100%' }}>
           <Card sx={{
             height: '100%', p: 0, boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
             '&:hover': {
               boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
             },
           }}>
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', mb: 0, p: 3 }}>
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', mb: 0, p: { xs: 2, md: 3 } }}>
               Projections vs Actuals
             </Typography>
             <Box sx={{ pr: 3 }}>
@@ -241,19 +236,19 @@ const DefaultDashboard = () => {
       {/* Second Row: Revenue Line Chart + World Map */}
       <Grid container spacing={3} sx={{ mb: 4 }} columns={{ xs: 2, sm: 4, md: 8, lg: 12 }}>
         {/* Revenue Line Chart */}
-        <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 4, lg: 8 }}>
+        <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 5, lg: 8 }}>
           <Card sx={{
             boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
             '&:hover': {
               boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
             },
           }}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', p: 3, flexWrap: 'wrap', gap: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', p: { xs: 2, md: 3 }, flexWrap: 'wrap', gap: { xs: 1, md: 3 } }}>
               <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                 Revenue
               </Typography>
-              <Divider orientation="vertical" variant="middle" flexItem sx={{ m: 0, borderWidth: '1px' }} />
-              <Box sx={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+              <Divider orientation="vertical" variant="middle" flexItem sx={{ m: 0, borderWidth: '1px', display: { xs: 'none', md: 'block' } }} />
+              <Box sx={{ display: 'flex', gap: { xs: 1, md: 6 }, flexWrap: 'wrap' }}>
                 <Box display="flex" alignItems="center" gap={1}>
                   <Box
                     sx={{
@@ -398,7 +393,7 @@ const DefaultDashboard = () => {
         </Grid>
 
         {/* World Map + Location Revenue */}
-        <Grid item xs={12} lg={4} size={{ xs: 2, sm: 4, md: 4, lg: 4 }}>
+        <Grid item xs={12} lg={4} size={{ xs: 2, sm: 4, md: 3, lg: 4 }}>
           <Card sx={{
             height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
             '&:hover': {
@@ -513,24 +508,25 @@ const DefaultDashboard = () => {
       {/* Third Row: Top Selling Products + Sales Type Pie Chart */}
       <Grid container spacing={3} columns={{ xs: 2, sm: 4, md: 8, lg: 12 }}>
         {/* Top Selling Products Table */}
-        <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 4, lg: 8 }}>
+        <Grid item xs={12} lg={8} size={{ xs: 2, sm: 4, md: 6, lg: 8 }}>
           <Card sx={{
             height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
             '&:hover': {
               boxShadow: `0 1px 12px ${theme.palette.background.paper}`,
             },
           }}>
-            <CardContent sx={{ p: 3 }}>
+            <CardContent sx={{ p: { xs: 2, md: 3 } }}>
               <Box sx={{ pb: 0 }}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                   Top Selling Products
                 </Typography>
               </Box>
-              <TableContainer>
+              <TableContainer sx={{}}>
                 <Table
                   sx={{
                     borderCollapse: 'collapse',
                     '& td, & th': { border: 'none' },
+                    overflow: 'auto'
                   }}
                 >
                   <TableHead>
@@ -541,10 +537,26 @@ const DefaultDashboard = () => {
                         color: '#1C1C1C66'
                       }}
                     >
-                      <TableCell align="left" sx={{ color: theme.palette.mode == 'dark' ? '#FFFFFF66' : '#1C1C1C66', px: 0 }}>Name</TableCell>
-                      <TableCell align="left" sx={{ color: theme.palette.mode == 'dark' ? '#FFFFFF66' : '#1C1C1C66', px: 0 }}>Price</TableCell>
-                      <TableCell align="left" sx={{ color: theme.palette.mode == 'dark' ? '#FFFFFF66' : '#1C1C1C66', px: 0 }}>Quantity</TableCell>
-                      <TableCell align="left" sx={{ color: theme.palette.mode == 'dark' ? '#FFFFFF66' : '#1C1C1C66', px: 0 }}>Amount</TableCell>
+                      <TableCell align="left" sx={{
+                        color: theme.palette.mode == 'dark' ? '#FFFFFF66' : '#1C1C1C66', px: 1, width: 'max-content', overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}>Name</TableCell>
+                      <TableCell align="left" sx={{
+                        color: theme.palette.mode == 'dark' ? '#FFFFFF66' : '#1C1C1C66', px: 1, width: 'max-content', overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}>Price</TableCell>
+                      <TableCell align="left" sx={{
+                        color: theme.palette.mode == 'dark' ? '#FFFFFF66' : '#1C1C1C66', px: 1, width: 'max-content', overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}>Quantity</TableCell>
+                      <TableCell align="left" sx={{
+                        color: theme.palette.mode == 'dark' ? '#FFFFFF66' : '#1C1C1C66', px: 1, width: 'max-content', overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}>Amount</TableCell>
                     </TableRow>
                   </TableHead>
 
@@ -554,18 +566,34 @@ const DefaultDashboard = () => {
                         key={product.id}
                         sx={{ p: 0, '&:hover': { backgroundColor: 'action.hover' } }}
                       >
-                        <TableCell align="left" sx={{ px: 0 }}>
+                        <TableCell align="left" sx={{
+                          px: 1, width: 'max-content', overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis'
+                        }}>
                           <Typography variant="body2" sx={{ fontWeight: 500 }}>
                             {product.name}
                           </Typography>
                         </TableCell>
-                        <TableCell align="left" sx={{ px: 0 }}>
+                        <TableCell align="left" sx={{
+                          px: 1, width: 'max-content', overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis'
+                        }}>
                           <Typography variant="body2">${product.price}</Typography>
                         </TableCell>
-                        <TableCell align="left" sx={{ px: 0 }}>
+                        <TableCell align="left" sx={{
+                          px: 1, width: 'max-content', overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis'
+                        }}>
                           <Typography variant="body2">{product.quantity}</Typography>
                         </TableCell>
-                        <TableCell align="left" sx={{ px: 0 }}>
+                        <TableCell align="left" sx={{
+                          px: 1, width: 'max-content', overflow: 'hidden',
+                          whiteSpace: 'nowrap',
+                          textOverflow: 'ellipsis'
+                        }}>
                           <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                             ${product.amount.toLocaleString()}
                           </Typography>
@@ -577,11 +605,11 @@ const DefaultDashboard = () => {
               </TableContainer>
 
             </CardContent>
-          </Card>
-        </Grid>
+          </Card >
+        </Grid >
 
         {/* Sales Type Pie Chart */}
-        <Grid item xs={12} lg={4} size={{ xs: 2, sm: 4, md: 4 }}>
+        < Grid item xs={12} lg={4} size={{ xs: 2, sm: 4, md: 2, lg: 4 }} sx={{ minWidth: '200px' }}>
           <Card sx={{
             height: '100%', boxShadow: 'none', border: 'none', backgroundColor: theme.palette.primary.light, transition: 'box-shadow 0.3s ease',
             '&:hover': {
@@ -652,8 +680,8 @@ const DefaultDashboard = () => {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Grid >
+      </Grid >
     </Box >
   );
 };
