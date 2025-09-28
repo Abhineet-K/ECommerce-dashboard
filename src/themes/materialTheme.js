@@ -1,4 +1,3 @@
-// src/themes/materialTheme.js
 import { createTheme } from '@mui/material/styles';
 
 const commonTheme = {

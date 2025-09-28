@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 
-const OrdersTable = ({
+const Table = ({
   data = [],
   columns = [],
   defaultPageSize = 10,
@@ -705,4 +705,4 @@ const OrdersTable = ({
   );
 };
 
-export default OrdersTable;
+export default Table;

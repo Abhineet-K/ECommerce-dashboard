@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Box, Typography } from '@mui/material';
-import OrdersTable from '../../../../components/ui/Table/Table';
+import Table from '../../../../components/custom/table/Table.jsx';
 import { ordersData } from '../../../../utils/data';
 import { formatDate } from '../../../../utils/helpers';
 
@@ -147,7 +147,7 @@ const Orders = () => {
         </Box>
         {/* Orders Table */}
         <Grid item xs={12} size={{ xs: 4, sm: 8, md: 12 }}>
-          <OrdersTable
+          <Table
             data={ordersData}
             columns={ordersColumns}
             enableSorting={true}
