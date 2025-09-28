@@ -11,10 +11,8 @@ A comprehensive, modern admin dashboard built with React, Material-UI, and Vite.
 - [Installation](#installation)
 - [Usage](#usage)
 - [Components](#components)
-- [API Reference](#api-reference)
 - [Customization](#customization)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Overview
