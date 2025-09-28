@@ -1,4 +1,4 @@
-# ByeWind Admin Dashboard
+# E-Commerce Admin Dashboard
 
 A comprehensive, modern admin dashboard built with React, Material-UI, and Vite. This project provides a fully responsive, feature-rich administrative interface with advanced data visualization, table management, and user experience components.
 
@@ -110,6 +110,7 @@ src/
 │   │   │   ├── Sidebar.jsx
 │   │   │   ├── NavigationTab.jsx
 │   │   │   ├── NavigationSubTab.jsx
+│   │   │   ├── NavigationSection.jsx
 │   │   │   └── FavoritesRecent.jsx
 │   │   ├── Header/
 │   │   │   ├── Header.jsx
@@ -124,38 +125,40 @@ src/
 │   │   └── MainLayout/
 │   │       └── MainLayout.jsx
 │   ├── charts/
-│   │   ├── CustomPieChart.jsx
-│   │   └── WorldMap.jsx
-│   ├── tables/
-│   │   └── OrdersTable.jsx
+│   │   └── DonutChart.jsx
+│   ├── ui/
+│   |    └── Table/
+│   │       └── Table.jsx
 │   └── common/
-│       ├── FavoriteButton.jsx
-│       └── UserAvatar.jsx
+│       └── FavoriteButton.jsx
 ├── contexts/
-│   ├── ThemeContext.jsx
 │   ├── AppContext.jsx
 │   ├── NavigationContext.jsx
 │   └── NotificationContext.jsx
+│   ├── ThemeContext.jsx
 ├── data/
 │   ├── index.js
 │   └── dashboardData.js
 ├── pages/
-│   ├── Dashboard/
-│   │   ├── Default/
-│   │   │   └── DefaultDashboard.jsx
 │   │   └── ECommerce/
 │   │       └── Orders/
 │   │           └── ECommerceOrders.jsx
-│   ├── Analytics/
-│   │   └── Analytics.jsx
-│   ├── Customers/
-│   │   └── Customers.jsx
-│   ├── Settings/
-│   │   └── Settings.jsx
-│   └── UserProfile/
-│       └── Overview/
-│           └── UserOverview.jsx
+│   └── Customers/
+│       └── Customers.jsx
+├── providers/
+│   ├── AppProvider.jsx
+│   ├── NavigationProvider.jsx
+│   ├── NotificationProvider.jsx
+│   └── ThemeContextProvider.jsx
+├── styles/
+│   └── globals.css
+├── themes/
+│   └── materialTheme.js
 ├── utils/
+│   ├── constant.js
+│   ├── constant.js
+│   ├── data.js
+│   ├── helpers.js
 │   └── timeUtils.js
 ├── App.jsx
 └── main.jsx
@@ -172,8 +175,8 @@ src/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/byewind-admin-dashboard.git
-   cd byewind-admin-dashboard
+   git clone https://github.com/Abhineet-K/ECommerce-dashboard.git
+   cd ecommerce-admin-dashboard
    ```
 
 2. **Install dependencies**
@@ -217,7 +220,7 @@ The dashboard comes with a complete navigation structure and sample data. To get
 
 1. Create your page component in `src/pages/YourPage/YourPage.jsx`
 2. Add the route in `src/App.jsx`
-3. Update navigation data in `src/data/index.js`
+3. Update navigation data in `src/utils/data.js`
 
 Example:
 ```jsx
@@ -243,10 +246,10 @@ const NewPage = () => {
 export default NewPage;
 ```
 
-### Using the Advanced Table Component
+### Using the Custom Table Component
 
 ```jsx
-import OrdersTable from '../components/tables/OrdersTable';
+import Table from '../components/ui/Table/Table';
 
 const MyComponent = () => {
   const data = [
@@ -288,7 +291,7 @@ const MyComponent = () => {
   ];
 
   return (
-    <OrdersTable
+    <Table
       data={data}
       columns={columns}
       enableSorting={true}
@@ -330,176 +333,11 @@ Top navigation bar with search, notifications, and user actions.
 
 ### Data Components
 
-#### OrdersTable
+#### Table
 Advanced data table component with comprehensive functionality.
 
-**Props:**
-```typescript
-interface OrdersTableProps {
-  data: Array<any>;
-  columns: Array<{
-    key: string;
-    label: string;
-    sortable?: boolean;
-    filterable?: boolean;
-    filterOptions?: string[];
-    width?: string;
-    align?: 'left' | 'center' | 'right';
-    render?: (value: any, row: any, index: number) => React.ReactNode;
-  }>;
-  defaultPageSize?: number;
-  pageSizeOptions?: number[];
-  enableSorting?: boolean;
-  enableFiltering?: boolean;
-  enableSearch?: boolean;
-  enablePagination?: boolean;
-  enableRowSelection?: boolean;
-  onRowClick?: (row: any, index: number) => void;
-  onSelectionChange?: (selectedRows: number[]) => void;
-  customStyles?: {
-    container?: React.CSSProperties;
-    header?: React.CSSProperties;
-    cell?: React.CSSProperties;
-  };
-  loading?: boolean;
-  emptyMessage?: string;
-}
-```
-
-#### CustomPieChart
+#### Custom Donut Chart
 Customizable pie chart with rounded segments and interactive tooltips.
-
-**Props:**
-```typescript
-interface CustomPieChartProps {
-  data: Array<{
-    label: string;
-    value: number;
-    color?: string;
-    outerBorderRadius?: number;
-    innerBorderRadius?: number;
-  }>;
-  size?: number;
-  innerRadius?: number;
-  outerRadius?: number;
-  gap?: number;
-  showTooltips?: boolean;
-  showLabels?: boolean;
-  labelPosition?: 'inside' | 'outside';
-  onSegmentClick?: (segment: any, index: number) => void;
-  onSegmentHover?: (segment: any, index: number) => void;
-}
-```
-
-### Context Providers
-
-#### ThemeContext
-Manages light/dark theme state and persistence.
-
-```jsx
-const { theme, isDarkMode, toggleTheme } = useThemeContext();
-```
-
-#### AppContext
-Global application state including user profile and UI preferences.
-
-```jsx
-const { 
-  userProfile, 
-  leftSidebarOpen, 
-  rightSidebarOpen,
-  favorites,
-  toggleLeftSidebar,
-  toggleRightSidebar,
-  toggleFavorite 
-} = useAppContext();
-```
-
-#### NotificationContext
-Real-time notification system with automatic generation.
-
-```jsx
-const { 
-  notifications, 
-  unreadCount, 
-  markAsRead,
-  addNotification 
-} = useNotificationContext();
-```
-
-## API Reference
-
-### Data Structure Examples
-
-#### User Profile
-```javascript
-{
-  id: 'user-id',
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  avatar: 'https://example.com/avatar.jpg',
-  role: 'Administrator',
-  department: 'Engineering',
-  joinDate: '2023-01-15',
-  preferences: {
-    theme: 'light',
-    notifications: {
-      email: true,
-      push: true,
-      desktop: false
-    }
-  },
-  stats: {
-    totalProjects: 24,
-    completedTasks: 186,
-    teamMembers: 12
-  }
-}
-```
-
-#### Navigation Item
-```javascript
-{
-  id: 'unique-id',
-  title: 'Menu Item',
-  path: '/path/to/page',
-  icon: 'MaterialUIIconName',
-  subItems: [
-    {
-      id: 'sub-item-id',
-      title: 'Sub Item',
-      path: '/sub/path',
-      dummy: false
-    }
-  ]
-}
-```
-
-#### Table Column Configuration
-```javascript
-{
-  key: 'dataProperty',
-  label: 'Display Name',
-  sortable: true,
-  filterable: true,
-  filterOptions: ['Option1', 'Option2'],
-  width: '150px',
-  align: 'left',
-  render: (value, row, index) => {
-    return <CustomComponent value={value} />;
-  }
-}
-```
-
-### Helper Functions
-
-#### Time Utilities
-```javascript
-import { formatDistanceToNow, formatDate } from './utils/timeUtils';
-
-formatDistanceToNow(Date.now() - 60000); // "1 minute ago"
-formatDate(new Date()); // "12/25/2023"
-```
 
 ## Customization
 
@@ -582,13 +420,6 @@ export default MyComponent;
    - Output Directory: `dist`
 3. Deploy automatically on push to main branch
 
-### Netlify
-
-1. Connect repository to Netlify
-2. Set build command: `npm run build`
-3. Set publish directory: `dist`
-4. Deploy
-
 ### Manual Deployment
 
 ```bash
@@ -598,112 +429,12 @@ npm run build
 # Upload the dist/ folder to your web server
 ```
 
-### Environment Variables
-
-Create `.env` file for environment-specific configurations:
-
-```env
-VITE_APP_TITLE=ByeWind Admin Dashboard
-VITE_API_BASE_URL=https://api.example.com
-VITE_ENABLE_ANALYTICS=true
-```
-
-## Performance Optimization
-
-### Code Splitting
-
-```javascript
-// Lazy load pages
-const Dashboard = lazy(() => import('./pages/Dashboard/DefaultDashboard'));
-const Analytics = lazy(() => import('./pages/Analytics/Analytics'));
-
-// Use Suspense
-<Suspense fallback={<div>Loading...</div>}>
-  <Dashboard />
-</Suspense>
-```
-
-### Image Optimization
-
-- Use WebP format when possible
-- Implement lazy loading for images
-- Use appropriate image sizes for different breakpoints
-
-### Bundle Analysis
-
-```bash
-npm run build -- --analyze
-```
-
 ## Browser Support
 
 - Chrome 90+
 - Firefox 88+
 - Safari 14+
 - Edge 90+
-
-## Contributing
-
-We welcome contributions to improve the ByeWind Admin Dashboard. Please follow these guidelines:
-
-### Development Workflow
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Make your changes following the coding standards
-4. Add tests for new functionality
-5. Commit with descriptive messages
-6. Push to your fork and submit a pull request
-
-### Coding Standards
-
-- Use functional components with hooks
-- Follow ESLint configuration
-- Write meaningful component and variable names
-- Add JSDoc comments for complex functions
-- Ensure responsive design
-- Test on multiple browsers
-
-### Commit Message Format
-
-```
-type(scope): description
-
-feat(dashboard): add new analytics chart
-fix(table): resolve sorting issue with dates
-docs(readme): update installation instructions
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**Issue: Build fails with memory error**
-```bash
-# Solution: Increase Node.js memory limit
-NODE_OPTIONS="--max_old_space_size=4096" npm run build
-```
-
-**Issue: Icons not displaying**
-- Ensure Material-UI icons package is installed
-- Check import statements for correct icon names
-
-**Issue: Theme not persisting**
-- Verify localStorage is available
-- Check ThemeContext implementation
-
-**Issue: Table not responsive**
-- Ensure parent container allows overflow
-- Check table wrapper styling
-
-### Performance Issues
-
-If you experience slow performance:
-
-1. Enable React Developer Tools Profiler
-2. Identify slow-rendering components
-3. Implement React.memo for expensive components
-4. Use useMemo and useCallback for expensive computations
 
 ## License
 
@@ -717,15 +448,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - Community contributors and feedback
 
 ---
-
-## Support
-
-For questions, issues, or contributions, please:
-
-- Open an issue on GitHub
-- Check existing documentation
-- Review code examples in the components
-
-**Project Status:** Active Development
-**Version:** 1.0.0
-**Last Updated:** December 2024

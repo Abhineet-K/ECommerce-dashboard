@@ -38,7 +38,7 @@ import {
 import { world_map } from './world_map.ts';
 import { MapsComponent, LayersDirective, LayerDirective, MarkersDirective, MarkerDirective, Marker, Inject } from '@syncfusion/ej2-react-maps';
 import { registerLicense } from '@syncfusion/ej2-base';
-import DonutChart from '../../../components/charts/DonutChart.jsx';
+import DonutChart from '../../../components/custom/charts/DonutChart.jsx';
 import { formatCurrency, formatNumber, COLORSLIST } from '../../../utils/helpers';
 import {
   revenueComparisonData,
